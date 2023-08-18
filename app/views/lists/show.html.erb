@@ -1,0 +1,16 @@
+<h1>Lists#show</h1>
+<p>Find me in app/views/lists/show.html.erb</p>
+<h1><%= @list.name %></h1>
+<p><%= link_to 'Delete this list', list_path(@list), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %></p>
+<br>
+<h2>Movies</h2>
+<% @list.movies.each do |movie| %>
+  <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
+  <p><%= movie.title %> . <%= link_to 'delete', bookmark_path(bookmark), data: {turbo_method: :delete, turbo_confirm: "Are uou sure?"} %></p>
+<% end %>
+<h2>Add a movie</h2>
+<%= simple_form_for([@list, @bookmark]) do |f| %>
+  <%= f.input :comment %>
+  <%= f.association :movie, collection: Movie.all %>
+  <%= f.submit %>
+<% end %>
